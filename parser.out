@@ -1,0 +1,694 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ELSE
+    EQ
+    FUNCTION
+    GE
+    GT
+    IF
+    LE
+    LT
+    NEQ
+    PROCEDURE
+    THEN
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID SEMI declarations BEGIN stmt_list END DOT
+Rule 2     declarations -> VAR var_declarations
+Rule 3     declarations -> empty
+Rule 4     var_declarations -> var_declarations var_declaration
+Rule 5     var_declarations -> var_declaration
+Rule 6     var_declaration -> ID_list COLON ID SEMI
+Rule 7     ID_list -> ID
+Rule 8     ID_list -> ID_list COMMA ID
+Rule 9     stmt_list -> stmt_list stmt
+Rule 10    stmt_list -> stmt
+Rule 11    stmt -> ID ASSIGN expr SEMI
+Rule 12    stmt -> block
+Rule 13    stmt -> WHILE expr DO stmt
+Rule 14    block -> BEGIN stmt_list END
+Rule 15    expr -> expr PLUS term
+Rule 16    expr -> expr MINUS term
+Rule 17    expr -> term
+Rule 18    term -> term TIMES factor
+Rule 19    term -> term DIVIDE factor
+Rule 20    term -> factor
+Rule 21    factor -> NUMBER
+Rule 22    factor -> ID
+Rule 23    factor -> LPAREN expr RPAREN
+Rule 24    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ASSIGN               : 11
+BEGIN                : 1 14
+COLON                : 6
+COMMA                : 8
+DIVIDE               : 19
+DO                   : 13
+DOT                  : 1
+ELSE                 : 
+END                  : 1 14
+EQ                   : 
+FUNCTION             : 
+GE                   : 
+GT                   : 
+ID                   : 1 6 7 8 11 22
+IF                   : 
+LE                   : 
+LPAREN               : 23
+LT                   : 
+MINUS                : 16
+NEQ                  : 
+NUMBER               : 21
+PLUS                 : 15
+PROCEDURE            : 
+PROGRAM              : 1
+RPAREN               : 23
+SEMI                 : 1 6 11
+THEN                 : 
+TIMES                : 18
+VAR                  : 2
+WHILE                : 13
+error                : 
+
+Nonterminals, with rules where they appear
+
+ID_list              : 6 8
+block                : 12
+declarations         : 1
+empty                : 3
+expr                 : 11 13 15 16 23
+factor               : 18 19 20
+program              : 0
+stmt                 : 9 10 13
+stmt_list            : 1 9 14
+term                 : 15 16 17 18 19
+var_declaration      : 4 5
+var_declarations     : 2 4
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID SEMI declarations BEGIN stmt_list END DOT
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . ID SEMI declarations BEGIN stmt_list END DOT
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM ID . SEMI declarations BEGIN stmt_list END DOT
+
+    SEMI            shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAM ID SEMI . declarations BEGIN stmt_list END DOT
+    (2) declarations -> . VAR var_declarations
+    (3) declarations -> . empty
+    (24) empty -> .
+
+    VAR             shift and go to state 6
+    BEGIN           reduce using rule 24 (empty -> .)
+
+    declarations                   shift and go to state 5
+    empty                          shift and go to state 7
+
+state 5
+
+    (1) program -> PROGRAM ID SEMI declarations . BEGIN stmt_list END DOT
+
+    BEGIN           shift and go to state 8
+
+
+state 6
+
+    (2) declarations -> VAR . var_declarations
+    (4) var_declarations -> . var_declarations var_declaration
+    (5) var_declarations -> . var_declaration
+    (6) var_declaration -> . ID_list COLON ID SEMI
+    (7) ID_list -> . ID
+    (8) ID_list -> . ID_list COMMA ID
+
+    ID              shift and go to state 12
+
+    var_declarations               shift and go to state 9
+    var_declaration                shift and go to state 10
+    ID_list                        shift and go to state 11
+
+state 7
+
+    (3) declarations -> empty .
+
+    BEGIN           reduce using rule 3 (declarations -> empty .)
+
+
+state 8
+
+    (1) program -> PROGRAM ID SEMI declarations BEGIN . stmt_list END DOT
+    (9) stmt_list -> . stmt_list stmt
+    (10) stmt_list -> . stmt
+    (11) stmt -> . ID ASSIGN expr SEMI
+    (12) stmt -> . block
+    (13) stmt -> . WHILE expr DO stmt
+    (14) block -> . BEGIN stmt_list END
+
+    ID              shift and go to state 13
+    WHILE           shift and go to state 18
+    BEGIN           shift and go to state 14
+
+    stmt_list                      shift and go to state 15
+    stmt                           shift and go to state 16
+    block                          shift and go to state 17
+
+state 9
+
+    (2) declarations -> VAR var_declarations .
+    (4) var_declarations -> var_declarations . var_declaration
+    (6) var_declaration -> . ID_list COLON ID SEMI
+    (7) ID_list -> . ID
+    (8) ID_list -> . ID_list COMMA ID
+
+    BEGIN           reduce using rule 2 (declarations -> VAR var_declarations .)
+    ID              shift and go to state 12
+
+    var_declaration                shift and go to state 19
+    ID_list                        shift and go to state 11
+
+state 10
+
+    (5) var_declarations -> var_declaration .
+
+    ID              reduce using rule 5 (var_declarations -> var_declaration .)
+    BEGIN           reduce using rule 5 (var_declarations -> var_declaration .)
+
+
+state 11
+
+    (6) var_declaration -> ID_list . COLON ID SEMI
+    (8) ID_list -> ID_list . COMMA ID
+
+    COLON           shift and go to state 20
+    COMMA           shift and go to state 21
+
+
+state 12
+
+    (7) ID_list -> ID .
+
+    COLON           reduce using rule 7 (ID_list -> ID .)
+    COMMA           reduce using rule 7 (ID_list -> ID .)
+
+
+state 13
+
+    (11) stmt -> ID . ASSIGN expr SEMI
+
+    ASSIGN          shift and go to state 22
+
+
+state 14
+
+    (14) block -> BEGIN . stmt_list END
+    (9) stmt_list -> . stmt_list stmt
+    (10) stmt_list -> . stmt
+    (11) stmt -> . ID ASSIGN expr SEMI
+    (12) stmt -> . block
+    (13) stmt -> . WHILE expr DO stmt
+    (14) block -> . BEGIN stmt_list END
+
+    ID              shift and go to state 13
+    WHILE           shift and go to state 18
+    BEGIN           shift and go to state 14
+
+    stmt_list                      shift and go to state 23
+    stmt                           shift and go to state 16
+    block                          shift and go to state 17
+
+state 15
+
+    (1) program -> PROGRAM ID SEMI declarations BEGIN stmt_list . END DOT
+    (9) stmt_list -> stmt_list . stmt
+    (11) stmt -> . ID ASSIGN expr SEMI
+    (12) stmt -> . block
+    (13) stmt -> . WHILE expr DO stmt
+    (14) block -> . BEGIN stmt_list END
+
+    END             shift and go to state 24
+    ID              shift and go to state 13
+    WHILE           shift and go to state 18
+    BEGIN           shift and go to state 14
+
+    stmt                           shift and go to state 25
+    block                          shift and go to state 17
+
+state 16
+
+    (10) stmt_list -> stmt .
+
+    END             reduce using rule 10 (stmt_list -> stmt .)
+    ID              reduce using rule 10 (stmt_list -> stmt .)
+    WHILE           reduce using rule 10 (stmt_list -> stmt .)
+    BEGIN           reduce using rule 10 (stmt_list -> stmt .)
+
+
+state 17
+
+    (12) stmt -> block .
+
+    END             reduce using rule 12 (stmt -> block .)
+    ID              reduce using rule 12 (stmt -> block .)
+    WHILE           reduce using rule 12 (stmt -> block .)
+    BEGIN           reduce using rule 12 (stmt -> block .)
+
+
+state 18
+
+    (13) stmt -> WHILE . expr DO stmt
+    (15) expr -> . expr PLUS term
+    (16) expr -> . expr MINUS term
+    (17) expr -> . term
+    (18) term -> . term TIMES factor
+    (19) term -> . term DIVIDE factor
+    (20) term -> . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . ID
+    (23) factor -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 29
+    ID              shift and go to state 30
+    LPAREN          shift and go to state 31
+
+    expr                           shift and go to state 26
+    term                           shift and go to state 27
+    factor                         shift and go to state 28
+
+state 19
+
+    (4) var_declarations -> var_declarations var_declaration .
+
+    ID              reduce using rule 4 (var_declarations -> var_declarations var_declaration .)
+    BEGIN           reduce using rule 4 (var_declarations -> var_declarations var_declaration .)
+
+
+state 20
+
+    (6) var_declaration -> ID_list COLON . ID SEMI
+
+    ID              shift and go to state 32
+
+
+state 21
+
+    (8) ID_list -> ID_list COMMA . ID
+
+    ID              shift and go to state 33
+
+
+state 22
+
+    (11) stmt -> ID ASSIGN . expr SEMI
+    (15) expr -> . expr PLUS term
+    (16) expr -> . expr MINUS term
+    (17) expr -> . term
+    (18) term -> . term TIMES factor
+    (19) term -> . term DIVIDE factor
+    (20) term -> . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . ID
+    (23) factor -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 29
+    ID              shift and go to state 30
+    LPAREN          shift and go to state 31
+
+    expr                           shift and go to state 34
+    term                           shift and go to state 27
+    factor                         shift and go to state 28
+
+state 23
+
+    (14) block -> BEGIN stmt_list . END
+    (9) stmt_list -> stmt_list . stmt
+    (11) stmt -> . ID ASSIGN expr SEMI
+    (12) stmt -> . block
+    (13) stmt -> . WHILE expr DO stmt
+    (14) block -> . BEGIN stmt_list END
+
+    END             shift and go to state 35
+    ID              shift and go to state 13
+    WHILE           shift and go to state 18
+    BEGIN           shift and go to state 14
+
+    stmt                           shift and go to state 25
+    block                          shift and go to state 17
+
+state 24
+
+    (1) program -> PROGRAM ID SEMI declarations BEGIN stmt_list END . DOT
+
+    DOT             shift and go to state 36
+
+
+state 25
+
+    (9) stmt_list -> stmt_list stmt .
+
+    END             reduce using rule 9 (stmt_list -> stmt_list stmt .)
+    ID              reduce using rule 9 (stmt_list -> stmt_list stmt .)
+    WHILE           reduce using rule 9 (stmt_list -> stmt_list stmt .)
+    BEGIN           reduce using rule 9 (stmt_list -> stmt_list stmt .)
+
+
+state 26
+
+    (13) stmt -> WHILE expr . DO stmt
+    (15) expr -> expr . PLUS term
+    (16) expr -> expr . MINUS term
+
+    DO              shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+
+
+state 27
+
+    (17) expr -> term .
+    (18) term -> term . TIMES factor
+    (19) term -> term . DIVIDE factor
+
+    DO              reduce using rule 17 (expr -> term .)
+    PLUS            reduce using rule 17 (expr -> term .)
+    MINUS           reduce using rule 17 (expr -> term .)
+    SEMI            reduce using rule 17 (expr -> term .)
+    RPAREN          reduce using rule 17 (expr -> term .)
+    TIMES           shift and go to state 40
+    DIVIDE          shift and go to state 41
+
+
+state 28
+
+    (20) term -> factor .
+
+    TIMES           reduce using rule 20 (term -> factor .)
+    DIVIDE          reduce using rule 20 (term -> factor .)
+    DO              reduce using rule 20 (term -> factor .)
+    PLUS            reduce using rule 20 (term -> factor .)
+    MINUS           reduce using rule 20 (term -> factor .)
+    SEMI            reduce using rule 20 (term -> factor .)
+    RPAREN          reduce using rule 20 (term -> factor .)
+
+
+state 29
+
+    (21) factor -> NUMBER .
+
+    TIMES           reduce using rule 21 (factor -> NUMBER .)
+    DIVIDE          reduce using rule 21 (factor -> NUMBER .)
+    DO              reduce using rule 21 (factor -> NUMBER .)
+    PLUS            reduce using rule 21 (factor -> NUMBER .)
+    MINUS           reduce using rule 21 (factor -> NUMBER .)
+    SEMI            reduce using rule 21 (factor -> NUMBER .)
+    RPAREN          reduce using rule 21 (factor -> NUMBER .)
+
+
+state 30
+
+    (22) factor -> ID .
+
+    TIMES           reduce using rule 22 (factor -> ID .)
+    DIVIDE          reduce using rule 22 (factor -> ID .)
+    DO              reduce using rule 22 (factor -> ID .)
+    PLUS            reduce using rule 22 (factor -> ID .)
+    MINUS           reduce using rule 22 (factor -> ID .)
+    SEMI            reduce using rule 22 (factor -> ID .)
+    RPAREN          reduce using rule 22 (factor -> ID .)
+
+
+state 31
+
+    (23) factor -> LPAREN . expr RPAREN
+    (15) expr -> . expr PLUS term
+    (16) expr -> . expr MINUS term
+    (17) expr -> . term
+    (18) term -> . term TIMES factor
+    (19) term -> . term DIVIDE factor
+    (20) term -> . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . ID
+    (23) factor -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 29
+    ID              shift and go to state 30
+    LPAREN          shift and go to state 31
+
+    expr                           shift and go to state 42
+    term                           shift and go to state 27
+    factor                         shift and go to state 28
+
+state 32
+
+    (6) var_declaration -> ID_list COLON ID . SEMI
+
+    SEMI            shift and go to state 43
+
+
+state 33
+
+    (8) ID_list -> ID_list COMMA ID .
+
+    COLON           reduce using rule 8 (ID_list -> ID_list COMMA ID .)
+    COMMA           reduce using rule 8 (ID_list -> ID_list COMMA ID .)
+
+
+state 34
+
+    (11) stmt -> ID ASSIGN expr . SEMI
+    (15) expr -> expr . PLUS term
+    (16) expr -> expr . MINUS term
+
+    SEMI            shift and go to state 44
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+
+
+state 35
+
+    (14) block -> BEGIN stmt_list END .
+
+    END             reduce using rule 14 (block -> BEGIN stmt_list END .)
+    ID              reduce using rule 14 (block -> BEGIN stmt_list END .)
+    WHILE           reduce using rule 14 (block -> BEGIN stmt_list END .)
+    BEGIN           reduce using rule 14 (block -> BEGIN stmt_list END .)
+
+
+state 36
+
+    (1) program -> PROGRAM ID SEMI declarations BEGIN stmt_list END DOT .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID SEMI declarations BEGIN stmt_list END DOT .)
+
+
+state 37
+
+    (13) stmt -> WHILE expr DO . stmt
+    (11) stmt -> . ID ASSIGN expr SEMI
+    (12) stmt -> . block
+    (13) stmt -> . WHILE expr DO stmt
+    (14) block -> . BEGIN stmt_list END
+
+    ID              shift and go to state 13
+    WHILE           shift and go to state 18
+    BEGIN           shift and go to state 14
+
+    stmt                           shift and go to state 45
+    block                          shift and go to state 17
+
+state 38
+
+    (15) expr -> expr PLUS . term
+    (18) term -> . term TIMES factor
+    (19) term -> . term DIVIDE factor
+    (20) term -> . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . ID
+    (23) factor -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 29
+    ID              shift and go to state 30
+    LPAREN          shift and go to state 31
+
+    term                           shift and go to state 46
+    factor                         shift and go to state 28
+
+state 39
+
+    (16) expr -> expr MINUS . term
+    (18) term -> . term TIMES factor
+    (19) term -> . term DIVIDE factor
+    (20) term -> . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . ID
+    (23) factor -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 29
+    ID              shift and go to state 30
+    LPAREN          shift and go to state 31
+
+    term                           shift and go to state 47
+    factor                         shift and go to state 28
+
+state 40
+
+    (18) term -> term TIMES . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . ID
+    (23) factor -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 29
+    ID              shift and go to state 30
+    LPAREN          shift and go to state 31
+
+    factor                         shift and go to state 48
+
+state 41
+
+    (19) term -> term DIVIDE . factor
+    (21) factor -> . NUMBER
+    (22) factor -> . ID
+    (23) factor -> . LPAREN expr RPAREN
+
+    NUMBER          shift and go to state 29
+    ID              shift and go to state 30
+    LPAREN          shift and go to state 31
+
+    factor                         shift and go to state 49
+
+state 42
+
+    (23) factor -> LPAREN expr . RPAREN
+    (15) expr -> expr . PLUS term
+    (16) expr -> expr . MINUS term
+
+    RPAREN          shift and go to state 50
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+
+
+state 43
+
+    (6) var_declaration -> ID_list COLON ID SEMI .
+
+    ID              reduce using rule 6 (var_declaration -> ID_list COLON ID SEMI .)
+    BEGIN           reduce using rule 6 (var_declaration -> ID_list COLON ID SEMI .)
+
+
+state 44
+
+    (11) stmt -> ID ASSIGN expr SEMI .
+
+    END             reduce using rule 11 (stmt -> ID ASSIGN expr SEMI .)
+    ID              reduce using rule 11 (stmt -> ID ASSIGN expr SEMI .)
+    WHILE           reduce using rule 11 (stmt -> ID ASSIGN expr SEMI .)
+    BEGIN           reduce using rule 11 (stmt -> ID ASSIGN expr SEMI .)
+
+
+state 45
+
+    (13) stmt -> WHILE expr DO stmt .
+
+    END             reduce using rule 13 (stmt -> WHILE expr DO stmt .)
+    ID              reduce using rule 13 (stmt -> WHILE expr DO stmt .)
+    WHILE           reduce using rule 13 (stmt -> WHILE expr DO stmt .)
+    BEGIN           reduce using rule 13 (stmt -> WHILE expr DO stmt .)
+
+
+state 46
+
+    (15) expr -> expr PLUS term .
+    (18) term -> term . TIMES factor
+    (19) term -> term . DIVIDE factor
+
+    DO              reduce using rule 15 (expr -> expr PLUS term .)
+    PLUS            reduce using rule 15 (expr -> expr PLUS term .)
+    MINUS           reduce using rule 15 (expr -> expr PLUS term .)
+    SEMI            reduce using rule 15 (expr -> expr PLUS term .)
+    RPAREN          reduce using rule 15 (expr -> expr PLUS term .)
+    TIMES           shift and go to state 40
+    DIVIDE          shift and go to state 41
+
+
+state 47
+
+    (16) expr -> expr MINUS term .
+    (18) term -> term . TIMES factor
+    (19) term -> term . DIVIDE factor
+
+    DO              reduce using rule 16 (expr -> expr MINUS term .)
+    PLUS            reduce using rule 16 (expr -> expr MINUS term .)
+    MINUS           reduce using rule 16 (expr -> expr MINUS term .)
+    SEMI            reduce using rule 16 (expr -> expr MINUS term .)
+    RPAREN          reduce using rule 16 (expr -> expr MINUS term .)
+    TIMES           shift and go to state 40
+    DIVIDE          shift and go to state 41
+
+
+state 48
+
+    (18) term -> term TIMES factor .
+
+    TIMES           reduce using rule 18 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 18 (term -> term TIMES factor .)
+    DO              reduce using rule 18 (term -> term TIMES factor .)
+    PLUS            reduce using rule 18 (term -> term TIMES factor .)
+    MINUS           reduce using rule 18 (term -> term TIMES factor .)
+    SEMI            reduce using rule 18 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 18 (term -> term TIMES factor .)
+
+
+state 49
+
+    (19) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 19 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 19 (term -> term DIVIDE factor .)
+    DO              reduce using rule 19 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 19 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 19 (term -> term DIVIDE factor .)
+    SEMI            reduce using rule 19 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 19 (term -> term DIVIDE factor .)
+
+
+state 50
+
+    (23) factor -> LPAREN expr RPAREN .
+
+    TIMES           reduce using rule 23 (factor -> LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 23 (factor -> LPAREN expr RPAREN .)
+    DO              reduce using rule 23 (factor -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 23 (factor -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 23 (factor -> LPAREN expr RPAREN .)
+    SEMI            reduce using rule 23 (factor -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 23 (factor -> LPAREN expr RPAREN .)
+

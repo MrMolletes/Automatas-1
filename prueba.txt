@@ -1,0 +1,8 @@
+program SimpleTest;
+var
+    x, y: integer;
+begin
+    x := 10;
+    y := 20;
+    x := x + y;
+end.
